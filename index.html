@@ -8,12 +8,12 @@
     body {
         margin: 0;
         padding: 0;
-        background: linear-gradient(to bottom, #ffd6e9, #fff1f6);
+        background: linear-gradient(135deg, #ffdde6, #fff6fa);
         font-family: "Georgia", serif;
         overflow: hidden;
         display: flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
         height: 100vh;
     }
 
@@ -24,95 +24,108 @@
         color: #ff4d88;
         font-size: 20px;
         animation: subir 6s linear infinite;
-        opacity: 0.8;
+        opacity: 0.85;
+        pointer-events: none;
     }
     @keyframes subir {
-        0% {transform: translateY(0) scale(1); opacity: 1;}
-        100% {transform: translateY(-100vh) scale(1.6); opacity: 0;}
+        0% { transform: translateY(0) scale(1); opacity: 1; }
+        100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
     }
 
-    /* Carta fechada */
-    .carta {
-        width: 280px;
+    /* Envelope */
+    .envelope {
+        width: 300px;
         height: 200px;
-        background: #ffe5ef;
-        border-radius: 10px;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        animation: balancar 3s ease-in-out infinite;
+        background: #f9e3ea;
+        border-radius: 6px;
         position: relative;
-        transition: 0.8s;
-    }
-    @keyframes balancar {
-        0%, 100% { transform: rotate(-3deg); }
-        50% { transform: rotate(3deg); }
+        cursor: pointer;
+        box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+        animation: balancar 3s ease-in-out infinite;
     }
 
-    .carta .texto-fechado {
-        font-size: 20px;
+    @keyframes balancar {
+        0%, 100% { transform: rotate(-2deg); }
+        50% { transform: rotate(2deg); }
+    }
+
+    /* Tampa do envelope */
+    .tampa {
+        width: 100%;
+        height: 100%;
+        background: #f7d1da;
+        clip-path: polygon(0 0, 100% 0, 50% 55%);
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform-origin: top;
+        transition: 0.8s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-weight: bold;
         color: #b3005e;
+        font-size: 20px;
+        letter-spacing: 1px;
     }
 
-    /* Carta aberta */
-    .carta-aberta {
-        width: 90%;
-        max-width: 600px;
-        padding: 30px;
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+    /* Folha de carta */
+    .folha {
+        width: 260px;
+        min-height: 320px;
+        background: #ffffff;
+        border-radius: 6px;
+        position: absolute;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.8);
         opacity: 0;
-        transform: scale(0.7);
-        transition: 0.6s;
-        display: none;
+        text-align: center;
+        padding: 25px;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+        transition: 1s;
+        overflow: hidden;
     }
 
-    .carta-aberta.aberta {
-        display: block;
-        opacity: 1;
-        transform: scale(1);
-    }
-
-    .carta-aberta h1 {
+    .folha h1 {
         color: #b3005e;
-        font-size: 32px;
         margin-bottom: 20px;
-        text-align: center;
+        font-size: 28px;
     }
-    .carta-aberta p {
+    .folha p {
         color: #4a0033;
-        font-size: 19px;
-        line-height: 1.6;
-        text-align: center;
+        font-size: 18px;
+        line-height: 1.55;
         white-space: pre-line;
     }
 </style>
 </head>
 <body>
 
-<!-- Carta Fechada -->
-<div class="carta" id="carta">
-    <div class="texto-fechado">Clique aqui</div>
+<div class="envelope" id="envelope">
+    <div class="tampa" id="tampa">Clique aqui</div>
 </div>
 
-<!-- Carta Aberta -->
-<div class="carta-aberta" id="cartaAberta">
+<div class="folha" id="folha">
     <h1>Eu te amo</h1>
     <p>
-Eu não tenho muita confiança nas pessoas, mas com você é diferente.
-Para ser sincero, ainda tenho um pouco de medo de que um dia usem o que eu digo contra mim,
-mas, mesmo assim, eu escolhi confiar em você.
+Eu não tenho muita confiança nas pessoas,
+mas com você é diferente.
 
-E isso não é pouco. Isso é algo grande para mim.
-Porque não é com qualquer pessoa que eu abro meu coração assim.
+Eu ainda tenho medo de um dia
+usarem o que eu digo contra mim,
+mas, mesmo assim,
+eu escolhi confiar em você.
+
+E isso é grande para mim.
+Porque não abro meu coração
+para qualquer pessoa.
 
 Por favor, valorize isso.
-Você se tornou alguém importante para mim,
-de um jeito que eu não esperava, mas que eu sinto de verdade.
+
+Você se tornou alguém importante,
+de um jeito que eu não esperava,
+mas que eu sinto de verdade.
 
 Sim, eu te amo.
 E isso é real.
@@ -133,17 +146,28 @@ function criarCoracao() {
 }
 setInterval(criarCoracao, 400);
 
-/* Abrir Carta */
-const carta = document.getElementById("carta");
-const cartaAberta = document.getElementById("cartaAberta");
+/* Animação de abrir envelope */
+const envelope = document.getElementById("envelope");
+const tampa = document.getElementById("tampa");
+const folha = document.getElementById("folha");
 
-carta.addEventListener("click", () => {
-    carta.style.opacity = "0";
-    carta.style.transform = "scale(0.6)";
+envelope.addEventListener("click", () => {
+    envelope.style.animation = "none";           // para de balançar
+    tampa.style.transform = "rotateX(-160deg)";  // tampa abre para trás
+
     setTimeout(() => {
-        carta.style.display = "none";
-        cartaAberta.classList.add("aberta");
-    }, 600);
+        folha.style.opacity = "1";
+        folha.style.transform = "translate(-50%, -50%) scale(1)";
+    }, 900);
+
+    setTimeout(() => {
+        envelope.style.opacity = "0";
+        envelope.style.transform = "scale(0.6)";
+    }, 1500);
+
+    setTimeout(() => {
+        envelope.style.display = "none";
+    }, 2000);
 });
 </script>
 
