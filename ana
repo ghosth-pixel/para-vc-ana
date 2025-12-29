@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Vocês</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to bottom, #ffb3c6, #ffdde1);
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+        overflow: hidden;
+    }
+
+    .container {
+        background: rgba(255,255,255,0.3);
+        padding: 30px;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        max-width: 600px;
+    }
+
+    h1 {
+        font-size: 32px;
+        color: #b3005e;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    p {
+        font-size: 18px;
+        color: #4a0033;
+        line-height: 1.6;
+    }
+
+    .heart {
+        position: absolute;
+        bottom: -50px;
+        color: #ff0055;
+        font-size: 24px;
+        animation: subir linear infinite;
+        opacity: 0.8;
+    }
+
+    @keyframes subir {
+        0% { transform: translateY(0) scale(1); opacity: 1; }
+        100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Eu Te Amo</h1>
+    <p>
+        olha nao tenho muita confiança nas pessoa mas com vcs eu estou tendo<br>
+        assim nao vou mentir tenho receio de vcs usar oq eu contro pra vc contra mim<br>
+        mas espero que isso nao aconolha eu cmç a me importar com vcs entao dem valor<br>
+        nisso pois nao sao todos que eu faço isso ok<br><br>
+        entao sim eu amo vcs<br>
+        eu te amo ok ?
+    </p>
+</div>
+
+<script>
+function criarCoracao() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => {
+        heart.remove();
+    }, 6000);
+}
+
+setInterval(criarCoracao, 300);
+</script>
+
+</body>
+</html>
