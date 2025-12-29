@@ -5,156 +5,144 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Para Você</title>
 <style>
-    body {
-        margin: 0;
-        background: linear-gradient(135deg, #ffd6e9, #fff1f6);
-        font-family: "Georgia", serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        overflow: hidden;
-    }
+body {
+  margin: 0;
+  background: #ffe6eb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  font-family: "Georgia", serif;
+}
 
-    /* Corações subindo */
-    .heart {
-        position: fixed;
-        bottom: -20px;
-        color: #ff4d88;
-        animation: subir 6s linear infinite;
-        opacity: 0.8;
-        pointer-events: none;
-    }
-    @keyframes subir {
-        0% { transform: translateY(0) scale(1); opacity: 1; }
-        100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
-    }
+/* Corações subindo */
+.heart {
+  position: fixed;
+  bottom: -10px;
+  font-size: 20px;
+  color: #ff4d6d;
+  animation: subir 6s linear infinite;
+  opacity: 0.7;
+}
+@keyframes subir {
+  0% {transform: translateY(0) scale(1);}
+  100% {transform: translateY(-100vh) scale(1.5); opacity: 0;}
+}
 
-    /* Botão para abrir a carta */
-    #abrir {
-        background: #b3005e;
-        color: white;
-        padding: 15px 30px;
-        border-radius: 8px;
-        font-size: 22px;
-        cursor: pointer;
-        border: none;
-        box-shadow: 0 5px 18px rgba(0,0,0,0.25);
-        transition: 0.3s;
-    }
-    #abrir:hover {
-        background: #8a004a;
-        transform: scale(1.05);
-    }
+/* Carta fechada */
+#carta {
+  width: 90%;
+  max-width: 380px;
+  background: #fdf3d8;
+  border: 2px solid #d6b98d;
+  border-radius: 8px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  padding: 25px;
+  text-align: center;
+  position: relative;
+  transition: transform 0.8s ease-in-out;
+  cursor: pointer;
+}
+#carta:hover {
+  transform: scale(1.02);
+}
 
-    /* Carta */
-    .carta {
-        display: none;
-        width: 80%;
-        max-width: 600px;
-        background: #fff9f0;
-        border-radius: 12px;
-        box-shadow: 0 14px 50px rgba(0,0,0,0.3);
-        padding: 40px;
-        animation: fadeIn 1s;
-    }
+/* Texto clicável */
+#abrir {
+  font-size: 18px;
+  margin-top: 20px;
+  display: inline-block;
+  background: #b5835a;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+}
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: scale(0.9); }
-        to { opacity: 1; transform: scale(1); }
-    }
+/* Conteúdo interno da carta */
+#conteudo {
+  display: none;
+  font-size: 18px;
+  margin-top: 10px;
+  text-align: left;
+  line-height: 28px;
+  white-space: pre-line;
+}
 
-    .carta h1 {
-        text-align: center;
-        color: #a0004c;
-        font-size: 36px;
-        margin-bottom: 20px;
-    }
-
-    .carta p {
-        font-size: 20px;
-        color: #4d2b24;
-        line-height: 1.6;
-        white-space: pre-line;
-    }
-
-    /* Efeito máquina de escrever */
-    .texto-digitado {
-        border-right: 2px solid #a0004c;
-        animation: piscar 0.8s infinite;
-    }
-    @keyframes piscar {
-        0% { border-color: transparent; }
-        50% { border-color: #a0004c; }
-        100% { border-color: transparent; }
-    }
+/* Animação do texto digitando */
+.digitando span {
+  opacity: 0;
+  animation: digitar 0.05s forwards;
+}
+@keyframes digitar {
+  to {opacity: 1;}
+}
 </style>
 </head>
 <body>
 
-<button id="abrir">Clique aqui para abrir</button>
-
-<div class="carta" id="carta">
-    <h1>Eu te amo</h1>
-    <p id="texto" class="texto-digitado"></p>
+<div id="carta">
+  <p style="font-size:22px; font-weight:bold;">Uma carta para você</p>
+  <div id="abrir">CLIQUE PARA ABRIR</div>
+  <div id="conteudo"></div>
 </div>
 
 <script>
-/* Corações */
-function criarCoracao() {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerText = "❤";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (Math.random() * 20 + 20) + "px";
-    heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 7000);
-}
-setInterval(criarCoracao, 450);
+// Texto que será digitado
+const texto = `
+Eu preciso que você saiba de algo.
 
-/* Texto para ser digitado */
-const textoCompleto = `
-Eu não tenho muita confiança nas pessoas,
-mas com você é diferente.
+Eu não confio fácil, não me abro rápido,
+e quase nunca deixo alguém entrar de verdade.
+Mas com você... algo em mim decidiu tentar.
 
-Mesmo com medo de um dia
-usarem o que eu digo contra mim,
-eu escolhi confiar em você.
+E isso, pra mim, já significa muito.
 
-E isso é grande para mim.
-Porque eu não abro meu coração
-para qualquer pessoa.
+Eu me importo com você.
+Eu tenho medo, sim, mas eu escolho ficar.
+Escolho sentir. Escolho acreditar em você.
+Porque você vale o risco.
 
-Por favor, valorize isso.
+Se um dia eu disse "eu te amo",
+não era só frase solta.
+Era verdade, era intenção.
+Era coração.
 
-Você se tornou alguém importante,
-de um jeito que eu não esperava,
-mas que eu sinto de verdade.
+E eu só quero que você entenda:
+Eu amo você.`;
+const conteudo = document.getElementById("conteudo");
+const carta = document.getElementById("carta");
+const abrir = document.getElementById("abrir");
 
-Sim, eu te amo.
-E isso é real.
-`;
+abrir.onclick = () => {
+  abrir.style.display = "none";
+  conteudo.style.display = "block";
+  carta.style.transform = "scale(1.02) translateY(-10px)";
 
-/* Efeito máquina de escrever */
-function digitar(texto, elemento, velocidade = 40) {
-    let i = 0;
-    function escrever() {
-        if (i < texto.length) {
-            elemento.innerHTML += texto.charAt(i);
-            i++;
-            setTimeout(escrever, velocidade);
-        }
-    }
-    escrever();
-}
+  // Digitando o texto
+  conteudo.classList.add("digitando");
+  conteudo.innerHTML = "";
+  [...texto].forEach((letra, i) => {
+    let span = document.createElement("span");
+    span.textContent = letra;
+    span.style.animationDelay = `${i * 0.03}s`;
+    conteudo.appendChild(span);
+  });
+};
 
-document.getElementById("abrir").addEventListener("click", () => {
-    document.getElementById("abrir").style.display = "none";
-    const carta = document.getElementById("carta");
-    carta.style.display = "block";
-    digitar(textoCompleto, document.getElementById("texto"), 40);
-});
+// Criar corações subindo
+setInterval(() => {
+  let heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "❤";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (Math.random() * 20 + 20) + "px";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 6000);
+}, 800);
 </script>
 
 </body>
