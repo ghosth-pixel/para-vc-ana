@@ -2,154 +2,139 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Para Você</title>
+<title>Carta</title>
 <style>
 body {
   margin: 0;
-  background: #ffe6eb;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  background: linear-gradient(#ffb6c1, #ff69b4);
   overflow: hidden;
-  font-family: "Georgia", serif;
+  font-family: Arial, sans-serif;
 }
 
-/* Corações subindo */
-.heart {
-  position: fixed;
-  bottom: -10px;
-  font-size: 20px;
-  color: #ff4d6d;
-  animation: subir 6s linear infinite;
-  opacity: 0.7;
+.fundo span {
+  position: absolute;
+  bottom: -50px;
+  font-size: 24px;
+  animation: subir 8s linear infinite;
 }
+
 @keyframes subir {
-  0% {transform: translateY(0) scale(1);}
-  100% {transform: translateY(-100vh) scale(1.5); opacity: 0;}
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-120vh); opacity: 0; }
 }
 
-/* Carta */
-#carta {
-  width: 90%;
-  max-width: 380px;
-  max-height: 90vh;
-  background: #fdf3d8;
-  border: 2px solid #d6b98d;
-  border-radius: 8px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-  padding: 25px;
-  text-align: center;
+.centro {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.carta {
+  width: 250px;
+  height: 160px;
+  background: #fff;
+  border-radius: 10px;
   position: relative;
-  transition: transform 0.8s ease-in-out;
   cursor: pointer;
-  overflow: hidden;
-}
-#carta:hover {
-  transform: scale(1.02);
-}
-
-/* Botão abrir */
-#abrir {
-  font-size: 18px;
-  margin-top: 20px;
-  display: inline-block;
-  background: #b5835a;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: bold;
-  text-decoration: none;
-  cursor: pointer;
 }
 
-/* Conteúdo da carta */
-#conteudo {
+.carta.aberta {
+  animation: abrir 1s forwards;
+}
+
+@keyframes abrir {
+  to {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+.conteudo {
   display: none;
-  font-size: 18px;
-  margin-top: 10px;
-  text-align: left;
-  line-height: 28px;
-  white-space: pre-line;
-  max-height: 60vh;
-  overflow-y: auto;
-  padding-right: 10px;
+  position: fixed;
+  inset: 0;
+  background: rgba(255,182,193,0.95);
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-/* Animação texto digitado */
-.digitando span {
-  opacity: 0;
-  animation: digitar 0.05s forwards;
+.papel {
+  background: #fff;
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 10px;
+  height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
 }
-@keyframes digitar {
-  to {opacity: 1;}
+
+#texto {
+  white-space: pre-line;
+  font-size: 16px;
 }
 </style>
 </head>
 <body>
 
-<div id="carta">
-  <p style="font-size:22px; font-weight:bold;">Uma carta para você</p>
-  <div id="abrir">CLIQUE PARA ABRIR</div>
-  <div id="conteudo"></div>
+<div class="fundo" id="fundo"></div>
+
+<div class="centro">
+  <div class="carta" id="carta">Clique para abrir</div>
+</div>
+
+<div class="conteudo" id="conteudo">
+  <div class="papel">
+    <div id="texto"></div>
+  </div>
 </div>
 
 <script>
-// Texto que será digitado
-const texto = `
-Eu preciso que você saiba de algo.
+const fundo = document.getElementById("fundo");
+for(let i=0;i<30;i++){
+  const s = document.createElement("span");
+  s.innerText = Math.random()>0.5 ? "❤️" : "🌹";
+  s.style.left = Math.random()*100+"vw";
+  s.style.animationDuration = (5+Math.random()*5)+"s";
+  fundo.appendChild(s);
+}
 
-Eu não confio fácil, não me abro rápido,
-e quase nunca deixo alguém entrar de verdade.
-Mas com você... algo em mim decidiu tentar.
-
-E isso, pra mim, já significa muito.
-
-Eu me importo com você.
-Eu tenho medo, sim, mas eu escolho ficar.
-Escolho sentir. Escolho acreditar em você.
-Porque você vale o risco.
-
-Se um dia eu disse "eu te amo",
-não era só frase solta.
-Era verdade, era intenção.
-Era coração.
-
-E eu só quero que você entenda:
-Eu amo você.`;
-
-const conteudo = document.getElementById("conteudo");
-const abrir = document.getElementById("abrir");
 const carta = document.getElementById("carta");
+const conteudo = document.getElementById("conteudo");
+const textoDiv = document.getElementById("texto");
 
-abrir.onclick = () => {
-  abrir.style.display = "none";
-  conteudo.style.display = "block";
-  carta.style.transform = "scale(1.02) translateY(-10px)";
-  window.scrollTo(0, 0);
+const textoCarta = `
+COLE AQUI O SEU TEXTO ARRUMADO.
+Pode ser grande, ele vai ter rolagem no celular.
 
-  // Digitar texto
-  conteudo.classList.add("digitando");
-  conteudo.innerHTML = "";
-  [...texto].forEach((letra, i) => {
-    let span = document.createElement("span");
-    span.textContent = letra;
-    span.style.animationDelay = `${i * 0.03}s`;
-    conteudo.appendChild(span);
-  });
+Exemplo:
+Meu amor,
+essa carta é pra você...
+`;
+
+carta.onclick = () => {
+  carta.classList.add("aberta");
+  setTimeout(() => {
+    conteudo.style.display = "block";
+    escreverTexto(textoCarta);
+  }, 1000);
 };
 
-// Corações subindo
-setInterval(() => {
-  let heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerHTML = "❤";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = (Math.random() * 20 + 20) + "px";
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 6000);
-}, 800);
+function escreverTexto(texto){
+  textoDiv.innerHTML = "";
+  let i = 0;
+  const intervalo = setInterval(()=>{
+    textoDiv.innerHTML += texto[i];
+    i++;
+    if(i >= texto.length) clearInterval(intervalo);
+  }, 40);
+}
 </script>
 
 </body>
